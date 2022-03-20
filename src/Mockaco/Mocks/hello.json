@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "hello/{message}"
+  },
+  "response": {
+    "body": {
+		"id": "<#= Faker.Random.Guid() #>",
+		"message": "Hello <#= Request.Route["message"] #>!",
+		"createdAt": <#= JsonConvert.SerializeObject(System.DateTime.Now) #>
+	  }
+  }
+}

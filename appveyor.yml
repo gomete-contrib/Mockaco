@@ -1,0 +1,39 @@
+pull_requests:
+  do_not_increment_build_number: true
+skip_non_tags: true
+image: Visual Studio 2019
+configuration: Release
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  version_prefix: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+build_script:
+- cmd: >-
+    dotnet --version
+    dotnet restore ./src/Mockaco/Mockaco.csproj --verbosity m
+    dotnet publish ./src/Mockaco/Mockaco.csproj
+test_script:
+- cmd: dotnet test .\test\Mockaco.Tests\Mockaco.Tests.csproj
+artifacts:
+- path: src\Mockaco\bin\Release\net5.0\publish\
+  name: Mockaco Web Site
+deploy:
+- provider: GitHub
+  tag: v$(appveyor_build_version)
+  auth_token:
+    secure: ksH+zrtlbEnpy6gasfUkZJQrewTVWVKVFPbzTDmhH94Q2SVBMEc4pI6+6I8JaGuE
+  artifact: Mockaco Web Site
+  draft: false
+  force_update: true
+  on:
+    APPVEYOR_REPO_TAG: true
+- provider: NuGet
+  api_key:
+    secure: DPYxpk2NINisxfFbRST6aH/m0KBYAt9ETmwkMgxRaGqnKtWlFKaZZFuqXtAG4eSj
+  on:
+    APPVEYOR_REPO_TAG: true
