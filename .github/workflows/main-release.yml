@@ -12,11 +12,8 @@ on:
 env:
   DOCKER_HUB_USERNAME: natenho
 
-permissions:
-  id-token: write
-  contents: read
-  checks: write
-  
+permissions: write-all
+
 jobs:
   build:
     runs-on: ubuntu-latest
